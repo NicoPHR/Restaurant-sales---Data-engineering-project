@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: raw_data
+    description: "Raw data from the API call"
+    database: radiant-galaxy-491121-e0
+    schema: restaurant_dataset
+    
+    tables:
+      - name: items
+      - name: sales

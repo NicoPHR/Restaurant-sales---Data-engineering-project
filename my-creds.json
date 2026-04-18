@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "radiant-galaxy-491121-e0",
+  "private_key_id": "a1981fbafac33cee312dd6f53e05dcfe0218e09a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDNIsjoXbEcWV6c\npl4LWipmNEAo4nZB5tPzblvCBS4dlp2mFWOQAL4/jXz+w+4zrVhrY/boKuFXNKSg\nyvi7My4/lj96wvJiXoM9rXP9nnLSU61g/BXznfNpiRokNk4p/mw2Tu9+/ccJ/Zb0\nsQtPz3HwUpiWlG1LdjhmNOICwKzCv/DFxVr6IcCl9V7uIerdPOouCdYeztzktcER\nwSgynNNmigrK/Np/I7UjQg29p1qPAWzan41Ee9bsyD3n/DTQGQrvbSBy1Tm0P1H8\nU6gNWCXJUqiaifzQWE0GJZpvekYdwc1Yv4E1Jj96CUW0ei9suBTV8/m+FKvnqjKi\n/d/3Y2anAgMBAAECggEAEoznOzAh0Iz6Y9MdpQwp0mU+OhREmnAL0bM0pAaA5ZcV\nuYusnbybd7bNS2Kfe1fdK5T2IoeiKhcuHgZM2OznbUOiiPDxJ1khqCWz3AcEniWI\nA8G4IHgzp2MJFKY+ikiiM4UO3l6Hrc0bZhROkBCT3qYxe0h/27ecoQ1+NL6EwPWe\nC15fiPlF1IzZQGDZe/cVmasDOEAzxNbvyDMK41lEoBXEa9Kkd6ntTk/XrAFYAY71\no35xbuYaAUbOcyD3p3T8uLSPrjPEpjS8UivuxO54QsCe5SKoklQGnejkmgZcXD7u\nbPkz7cTIFuPT7gOiR3cuzrVmETqAitEHoc0pY7qlMQKBgQDwZYz6w/ruoh5oBMc9\n5zZDekIQYgsvDP2QfMkQTqXO68lLk75RGLzARVR71UJRATCLj//5FehIvejOAq17\nwfA0vWpk4gscUUx3iz+CeqoUtDgZOlHzR7dDHxdO1TyTEp2cPWX1M33DZaKilvGc\nVq54kESVGSGJRpQ7iN3DPF9C0QKBgQDac1aCUjy6p1mITIF+NaaEHPURbTj/gKZC\nHRCq/6AFsgFH/dANBqnIIJgmozdFV1j1vymBl8zFvPk8oAZmno6ZLEZnYxy2K9X0\nQVYb/UbinaEWSXPPsfEPsY6xw5/NUtV1xUxVTNpcQjErJVPc7M8L9a11gb3+Ivj2\nIy8SQqC/9wKBgA1c58BMwpcfRedsVJL5Vkfb9O4qNQrxgurUNO0GIitlafQci1jA\nskVR1Udo7F3KXiNz5ru23wmkHNvOxEv71Nlpqg9fjVSOpFyEzgv3u5qZBgFI/6Mx\nWluNz+Le8ZYPU9mKhC9kJFqHPMoi791L6DjldBqBoh6aYMUKb6FZqsXxAoGAJZ9N\nm9479U2THuVGPA1TY1d1YY31DhQDDknhMAIcdj6k99gft86Y+Q2cBrN/dmLHwHMu\n29HgA4I7TpSk5ZGTL5Avg+jO7hT4oTuLcACb77WEI8l8t52GzdQfpj/xyrPkbYcQ\nUXSN+uuveiXQnrDuK7ohKKayqQ0u4X1HwxZUhxsCgYBduqqTRUUVAkbz1Nm+fgaw\nV6dgFX5IT+khj7vSjF/98AnRbMmXEGO+EzT7TuKbvGyY1IRX9b2WatNkxM+yf+bd\nj4erEQoF9YMma1veEzEyn5lOEM2AvOzYo4OyBV893WUrql0HgrB8oHIDXEehrXCM\nxOVU2z3+q/+aDCHI360Nlw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "kestra@radiant-galaxy-491121-e0.iam.gserviceaccount.com",
+  "client_id": "115522516455720394213",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/kestra%40radiant-galaxy-491121-e0.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

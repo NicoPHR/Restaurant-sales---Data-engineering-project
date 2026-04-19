@@ -1,0 +1,110 @@
+id: 03_api_extraction_and_load
+namespace: restaurant
+description: "Fetches API JSON, stores in GCS, flattens sales/items, and loads to BigQuery"
+
+triggers:
+  - id: daily_6am
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 6 * * *"
+    timezone: "America/Argentina/Buenos_Aires"
+
+pluginDefaults:
+  - type: io.kestra.plugin.gcp
+    values:
+      projectId: "{{ kv('GCP_PROJECT_ID') }}" 
+      serviceAccount: "{{ secret('GCP_CREDS') }}" 
+
+tasks:
+  # STEP 1: Get the JSON response and output it
+  - id: fetch_api
+    type: io.kestra.plugin.scripts.python.Script
+    beforeCommands:
+      - pip install requests
+    env:
+      API_KEY: "{{ kv('API_KEY') }}"
+      API_SECRET: "{{ kv('API_SECRET') }}"
+      YESTERDAY: "{{ execution.startDate | dateAdd(-1, 'DAYS') | date('yyyy-MM-dd') }}"
+    outputFiles:
+      - "raw_data.json"
+    script: |
+      import os, json, requests, datetime
+      
+      # Authenticate
+      auth_resp = requests.post("https://auth.fu.do/api", 
+          json={"apiKey": os.environ["API_KEY"], "apiSecret": os.environ["API_SECRET"]}, 
+          headers={"Content-Type": "application/json"}).json()
+      
+      # Fetch Data (Only including 'items' to save bandwidth)
+      sale_date = datetime.date.fromisoformat(os.environ["YESTERDAY"])
+      date_filter = f"and(gte.{sale_date}T07:00:00Z,lte.{sale_date + datetime.timedelta(days=1)}T06:59:59Z)"
+      headers = {"Authorization": f"Bearer {auth_resp['token']}"}
+      
+      data, page = [], 1
+      while True:
+          resp = requests.get("https://api.fu.do/v1alpha1/sales", headers=headers, 
+              params={"filter[createdAt]": date_filter, "include": "items", "page[size]": 500, "page[number]": page}).json()
+          if not resp.get("data"): break
+          data.append(resp)
+          page += 1
+          
+      # Output Step 1
+      with open("raw_data.json", "w") as f: 
+          json.dump(data, f)
+
+  # STEP 2: Save raw JSON to GCS bucket (Partitioned by Year/Month)
+  - id: upload_to_gcs
+    type: io.kestra.plugin.gcp.gcs.Upload
+    from: "{{ outputs.fetch_api.outputFiles['raw_data.json'] }}"
+    to: "gs://{{ kv('GCP_BUCKET_NAME') }}/raw_sales_data/{{ execution.startDate | dateAdd(-1, 'DAYS') | date('yyyy') }}/{{ execution.startDate | dateAdd(-1, 'DAYS') | date('MM') }}/{{ execution.startDate | dateAdd(-1, 'DAYS') | date('dd-MM-yyyy') }}.json"
+
+
+# STEP 3a: Flatten output from Step 1 (Only Sales and Items)
+  - id: flatten_json
+    type: io.kestra.plugin.scripts.python.Script
+    beforeCommands:
+      - pip install pandas
+    inputFiles:
+      "raw_data.json": "{{ outputs.fetch_api.outputFiles['raw_data.json'] }}"
+    outputFiles:
+      - "*.csv"
+    script: |
+      import json
+      import pandas as pd
+
+      with open("raw_data.json", "r") as f:
+          json_data = json.load(f)
+
+      sales, items = [], []
+      
+      for page in json_data:
+          sales.extend([{k: v for k, v in s.items() if k != 'relationships'} for s in page.get("data", [])])
+          items.extend([i for i in page.get("included", []) if i.get("type") == "Item"])
+
+      def process_and_save(data_list, filename):
+          if data_list:
+              df = pd.json_normalize(data_list)
+              # FIX: Replace periods in column names with underscores for BigQuery compatibility
+              df.columns = df.columns.str.replace('.', '_', regex=False)
+              df.to_csv(filename, index=False)
+
+      process_and_save(sales, "sales.csv")
+      process_and_save(items, "items.csv")
+
+  # STEP 3b: Upload the flattened CSVs to BigQuery
+  - id: load_to_bq
+    type: io.kestra.plugin.core.flow.ForEach
+    values: 
+      - sales
+      - items
+    tasks:
+      - id: bq_load_table
+        type: io.kestra.plugin.gcp.bigquery.Load
+        runIf: "{{ outputs.flatten_json.outputFiles[taskrun.value ~ '.csv'] is defined }}"
+        from: "{{ outputs.flatten_json.outputFiles[taskrun.value ~ '.csv'] }}"
+        destinationTable: "{{ kv('GCP_PROJECT_ID') }}.restaurant_dataset.{{ taskrun.value }}"
+        format: CSV
+        csvOptions:
+          fieldDelimiter: ","
+          skipLeadingRows: 1
+        writeDisposition: WRITE_APPEND
+        autodetect: true

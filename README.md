@@ -66,6 +66,9 @@ terraform destroy
 
 *(Note: The flow used in terraform can be found in the `Terraform/` directory of this repository).*
 
+<img width="340" height="689" alt="image" src="https://github.com/user-attachments/assets/454567ae-9237-422e-8b8c-f4e3ff107d9e" />
+<img width="1906" height="625" alt="image" src="https://github.com/user-attachments/assets/85c24844-3891-4499-ad96-1add6f659967" />
+
 ## 2) Data ingestion and orchestration with Kestra
 
 To automate the daily flow of data, this project uses **Kestra** as the core orchestration engine. A scheduled flow runs once a day, ensuring the data warehouse is consistently updated with the previous day's transactions without any manual intervention.
@@ -78,6 +81,8 @@ The automated ingestion pipeline executes the following sequence:
 4. **BigQuery Loading (Raw Layer):** Finally, the flattened data is loaded directly into Google BigQuery. This step populates two distinct raw tables—`sales` and `items`—acting as the foundational "Bronze Layer" for downstream transformations.
 
 *(Note: The flow used in kestra can be found in the `kestra/` directory of this repository).*
+
+<img width="225" height="713" alt="image" src="https://github.com/user-attachments/assets/9822bafd-48ce-4021-80cb-d87b9a2d942f" />
 
 ## 3) Data Transformation (dbt)
 
@@ -94,6 +99,8 @@ To ensure the pipeline is highly efficient and cost-effective, the final tables 
 
 *(Note: All of the SQL transformation logic and configuration blocks can be found in the `models/` directory of this repository).*
 
+<img width="1917" height="904" alt="image" src="https://github.com/user-attachments/assets/92e3c62b-55a4-4747-b6e9-2cfe3302d9f2" />
+
 ## 4. Data Visualization & Dashboard (Looker Studio)
 
 The final "Consume" layer of this data pipeline is the presentation layer. To make the transformed data accessible and actionable for the restaurant management, I built an interactive dashboard using **Looker Studio**.
@@ -105,3 +112,5 @@ The dashboard translates the daily data into clear business insights, featuring:
 * **Daily Revenue Tracking:** A time-series view displaying the total sales amount (in Pesos) generated each day, allowing management to easily spot high-revenue days and overall financial trends.
 * **Items Sold per Day:** A volume tracker showing the exact quantity of items moved daily. This is crucial for anticipating kitchen workload and improving inventory planning.
 * **Sales Channel Distribution:** A pie chart breaking down the percentage split between **Deliveries** and **Dine-in** orders. This helps the business understand shifting customer dining preferences and allocate floor vs. delivery staff accordingly.
+
+<img width="1917" height="853" alt="image" src="https://github.com/user-attachments/assets/5944aee8-b316-454c-8cab-38c14c385905" />

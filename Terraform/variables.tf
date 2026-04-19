@@ -8,6 +8,11 @@ variable "bq_dataset_name" {
   default     = "restaurant_dataset"
 }
 
+variable "bq_dbt_dataset_name" {
+  description = "The dataset where dbt will store transformed models"
+  default     = "dbt_restaurant"
+}
+
 variable "gcs_bucket_name" {
   description = "My Storage Bucket Name"
   default     = "restaurant-485023-terra-bucket"
@@ -15,7 +20,7 @@ variable "gcs_bucket_name" {
 
 variable "location" {
   description = "Project Location"
-  default     = "US"
+  default     = "us-central1"
 }
 
 variable "gcs_storage_class" {

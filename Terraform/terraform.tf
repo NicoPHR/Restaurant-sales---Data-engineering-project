@@ -34,3 +34,8 @@ resource "google_bigquery_dataset" "demo_dataset" {
   dataset_id = var.bq_dataset_name
   location   = var.location
 }
+
+resource "google_bigquery_dataset" "dbt_dataset" {
+  dataset_id = var.bq_dbt_dataset_name
+  location   = var.location
+}

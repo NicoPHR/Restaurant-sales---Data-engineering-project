@@ -1,8 +1,15 @@
+{{ config(
+    materialized='table',
+    partition_by={
+      "field": "created_at",
+      "data_type": "timestamp", 
+      "granularity": "day"
+    },
+    cluster_by=['sale_id']
+) }}
+
 with source_data as (
-
-    -- Replace with your actual configured dbt source or ref
     select * from {{ source('raw_data','items') }}
-
 ),
 
 cleaned_data as (

@@ -1,3 +1,13 @@
+{{ config(
+    materialized='table',
+    partition_by={
+      "field": "created_at",
+      "data_type": "timestamp", 
+      "granularity": "day"
+    },
+    cluster_by=['id']
+) }}
+
 with source_data as (
     select * from {{ source('raw_data','sales') }}
 ),
